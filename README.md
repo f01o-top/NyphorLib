@@ -97,7 +97,7 @@ UI:AddScript("Infinite Yield", function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source"))()
 end)
 
-UI:AddCredit("YourName — Owner")
+UI:AddCredit("F01o — Owner")
 UI:Notify("Loaded", "Nyphor UI ready", 3)
 ```
 
@@ -262,9 +262,9 @@ UI:AddScript("Remote Spy", function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/exxtremestuffs/SimpleSpySource/master/SimpleSpy.lua"))()
 end)
 
-UI:AddCredit("Jack — Original Designer")
-UI:AddCredit("Remium — UI Components")
-UI:AddCredit("YourName — Owner")
+UI:AddCredit("F01o — Original Designer")
+UI:AddCredit("Nyphor — UI Components")
+UI:AddCredit("F01o — Owner")
 
 UI:OnExecute(function(source)
     local fn = loadstring(source)
