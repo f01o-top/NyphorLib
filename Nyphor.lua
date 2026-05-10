@@ -1,31 +1,70 @@
 local Nyphor = {}
 Nyphor.__index = Nyphor
 
-local Players = game:GetService("Players")
-local TweenService = game:GetService("TweenService")
-local UserInputService = game:GetService("UserInputService")
-local RunService = game:GetService("RunService")
-local GuiService = game:GetService("GuiService")
-local CoreGui = game:GetService("CoreGui")
-local StarterGui = game:GetService("StarterGui")
+local cloneref = cloneref or function(obj) return obj end
 
-local LocalPlayer = Players.LocalPlayer
+local function safeGetService(name)
+	local ok, service = pcall(function()
+		return cloneref(game:GetService(name))
+	end)
+	if ok and service then return service end
+	return nil
+end
+
+local Players = safeGetService("Players")
+local TweenService = safeGetService("TweenService")
+local UserInputService = safeGetService("UserInputService")
+local RunService = safeGetService("RunService")
+local GuiService = safeGetService("GuiService")
+local CoreGui = safeGetService("CoreGui")
+local StarterGui = safeGetService("StarterGui")
+
+local LocalPlayer
+do
+	local ok, lp = pcall(function() return Players and Players.LocalPlayer end)
+	if ok and lp then
+		LocalPlayer = lp
+	else
+		repeat task.wait() until Players and Players.LocalPlayer
+		LocalPlayer = Players.LocalPlayer
+	end
+end
 
 local SINGLETON_TAG = "__NYPHOR_UI_LIB_INSTANCE__"
 
 local function getParentGui()
 
-	local success, result = pcall(function()
-		if gethui then return gethui() end
-		if syn and syn.protect_gui then
-			local gui = Instance.new("ScreenGui")
-			syn.protect_gui(gui)
-			return CoreGui
-		end
-		return CoreGui
+	local ok1, hui = pcall(function() if gethui then return gethui() end end)
+	if ok1 and hui then return hui end
+
+	local ok2, prot = pcall(function()
+		if syn and syn.protect_gui then return "syn" end
+		if protectgui then return "protectgui" end
+		return nil
 	end)
-	if success and result then return result end
-	return LocalPlayer:WaitForChild("PlayerGui")
+
+	if ok2 and prot and CoreGui then
+		return CoreGui
+	end
+
+	if CoreGui then
+		local okCore = pcall(function() return CoreGui:GetChildren() end)
+		if okCore then return CoreGui end
+	end
+
+	local ok3, pg = pcall(function()
+		return LocalPlayer and LocalPlayer:WaitForChild("PlayerGui", 5)
+	end)
+	if ok3 and pg then return pg end
+
+	return CoreGui or game:GetService("CoreGui")
+end
+
+local function safeProtect(gui)
+	pcall(function()
+		if syn and syn.protect_gui then syn.protect_gui(gui)
+		elseif protectgui then protectgui(gui) end
+	end)
 end
 
 local Util = {}
@@ -498,7 +537,16 @@ local function buildUI(parent)
 	rm.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 	rm.ResetOnSpawn = false
 	rm.IgnoreGuiInset = true
-	rm.Parent = parent
+
+	safeProtect(rm)
+
+	local parented = pcall(function() rm.Parent = parent end)
+	if not parented then
+		pcall(function() rm.Parent = CoreGui end)
+		if not rm.Parent then
+			pcall(function() rm.Parent = LocalPlayer:WaitForChild("PlayerGui") end)
+		end
+	end
 
 	local Main = Instance.new("Frame")
 	Main.Name = "Main"
