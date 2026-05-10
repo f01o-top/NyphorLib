@@ -27,6 +27,7 @@
 [**Quick Start**](#quick-start) ·
 [**API Reference**](#api-reference) ·
 [**Examples**](#examples) ·
+[**Notes**](#important-notes) ·
 [**Credits**](#credits)
 
 </div>
@@ -75,8 +76,6 @@
 local Nyphor = loadstring(game:HttpGet("https://raw.githubusercontent.com/f01o-top/NyphorLib/refs/heads/main/Nyphor.lua"))()
 ```
 
-Replace `YOUR_USERNAME/YOUR_REPO` with your actual repository path.
-
 <br>
 
 ---
@@ -87,9 +86,10 @@ Replace `YOUR_USERNAME/YOUR_REPO` with your actual repository path.
 
 ```lua
 local Nyphor = loadstring(game:HttpGet("https://raw.githubusercontent.com/f01o-top/NyphorLib/refs/heads/main/Nyphor.lua"))()
+local Players = game:GetService("Players")
 
 local UI = Nyphor:Init({
-    Welcome  = "WELCOME BACK",
+    Welcome  = "WELCOME BACK, " .. Players.LocalPlayer.Name:upper(),
     Subtitle = "NO PLAN. JUST MOVE.",
 })
 
@@ -128,6 +128,9 @@ local UI = Nyphor:Init({
 │   Hint       │  string  │  "Press NYPHOR for menu"                │
 └──────────────┴──────────┴─────────────────────────────────────────┘
 ```
+
+If `Welcome` is omitted, the player's name is fetched safely  
+inside the library — no need to access `game.Players` yourself.
 
 <br>
 
@@ -244,9 +247,10 @@ Pages slide in from a direction determined by the source/target combination:
 
 ```lua
 local Nyphor = loadstring(game:HttpGet("https://raw.githubusercontent.com/f01o-top/NyphorLib/refs/heads/main/Nyphor.lua"))()
+local Players = game:GetService("Players")
 
 local UI = Nyphor:Init({
-    Welcome  = "WELCOME BACK, " .. game.Players.LocalPlayer.Name:upper(),
+    Welcome  = "WELCOME BACK, " .. Players.LocalPlayer.Name:upper(),
     Subtitle = "NO PLAN. JUST MOVE.",
 })
 
@@ -262,8 +266,6 @@ UI:AddScript("Remote Spy", function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/exxtremestuffs/SimpleSpySource/master/SimpleSpy.lua"))()
 end)
 
-UI:AddCredit("F01o — Original Designer")
-UI:AddCredit("Nyphor — UI Components")
 UI:AddCredit("F01o — Owner")
 
 UI:OnExecute(function(source)
@@ -307,6 +309,55 @@ end)
 
 <br>
 
+## Important Notes
+
+```
+┌────────────────────────────────────────────────────────────────────┐
+│                                                                    │
+│   ALWAYS use   game:GetService("Players")                          │
+│   NEVER use    game.Players                                        │
+│                                                                    │
+│   The dot accessor fails in environments where the DataModel       │
+│   name differs (e.g. UGC catalog previews, custom DataModels).     │
+│   Use the colon-call form for guaranteed compatibility.            │
+│                                                                    │
+└────────────────────────────────────────────────────────────────────┘
+```
+
+### Wrong
+
+```lua
+local UI = Nyphor:Init({
+    Welcome = "HI " .. game.Players.LocalPlayer.Name,
+})
+```
+
+### Right
+
+```lua
+local Players = game:GetService("Players")
+
+local UI = Nyphor:Init({
+    Welcome = "HI " .. Players.LocalPlayer.Name,
+})
+```
+
+### Easiest
+
+Omit `Welcome` entirely — the library generates a default safely:
+
+```lua
+local UI = Nyphor:Init({
+    Subtitle = "NO PLAN. JUST MOVE.",
+})
+```
+
+<br>
+
+---
+
+<br>
+
 ## Compatibility
 
 ```
@@ -319,6 +370,9 @@ end)
 │      2.  syn.protect_gui()      — Synapse legacy                   │
 │      3.  CoreGui                — direct fallback                  │
 │      4.  PlayerGui              — non-executor environments        │
+│                                                                    │
+│   All service lookups are wrapped in pcall + cloneref where        │
+│   available, so anti-cheat hooked environments still work.         │
 │                                                                    │
 │   Tested on: most UNC-compliant executors.                         │
 │   May behave inconsistently on UNC-deficient executors.            │
@@ -338,6 +392,7 @@ end)
 NyphorLib.lua
 │
 ├──  Services & Singleton Check
+│    └── safeGetService + cloneref + pcall fallbacks
 │
 ├──  Util
 │    ├── Dragify       — drag any frame
@@ -397,8 +452,18 @@ server-side and execution logic removed.
 ## License
 
 ```
-MIT License — see LICENSE file for details.
+┌─────────────────────────────────────────────────────────────┐
+│                                                             │
+│   MIT License — Copyright (c) 2026 f01o                     │
+│                                                             │
+│   Free to use, modify, merge, publish, distribute,          │
+│   sublicense, and/or sell copies of this software,          │
+│   provided the copyright notice is included.                │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
 ```
+
+See the [LICENSE](./LICENSE) file for the full text.
 
 <br>
 
@@ -406,7 +471,7 @@ MIT License — see LICENSE file for details.
 
 ```
 ─────────────────────────────────────────────────────
-                   N O   P L A N
+                  N O   P L A N
                  J U S T   M O V E
 ─────────────────────────────────────────────────────
 ```
