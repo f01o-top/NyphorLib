@@ -72,7 +72,7 @@
 ## Installation
 
 ```lua
-local Nyphor = loadstring(game:HttpGet("https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO/main/NyphorLib.lua"))()
+local Nyphor = loadstring(game:HttpGet("https://raw.githubusercontent.com/f01o-top/NyphorLib/refs/heads/main/Nyphor.lua"))()
 ```
 
 Replace `YOUR_USERNAME/YOUR_REPO` with your actual repository path.
@@ -86,7 +86,7 @@ Replace `YOUR_USERNAME/YOUR_REPO` with your actual repository path.
 ## Quick Start
 
 ```lua
-local Nyphor = loadstring(game:HttpGet("YOUR_RAW_URL"))()
+local Nyphor = loadstring(game:HttpGet("https://raw.githubusercontent.com/f01o-top/NyphorLib/refs/heads/main/Nyphor.lua"))()
 
 local UI = Nyphor:Init({
     Welcome  = "WELCOME BACK",
@@ -243,7 +243,7 @@ Pages slide in from a direction determined by the source/target combination:
 ### Complete Setup
 
 ```lua
-local Nyphor = loadstring(game:HttpGet("YOUR_RAW_URL"))()
+local Nyphor = loadstring(game:HttpGet("https://raw.githubusercontent.com/f01o-top/NyphorLib/refs/heads/main/Nyphor.lua"))()
 
 local UI = Nyphor:Init({
     Welcome  = "WELCOME BACK, " .. game.Players.LocalPlayer.Name:upper(),
@@ -397,7 +397,7 @@ server-side and execution logic removed.
 ## License
 
 ```
-MIT License — see LICENSE file for details.
+GPL v3.0 License — see LICENSE file for details.
 ```
 
 <br>
