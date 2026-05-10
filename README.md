@@ -18,7 +18,7 @@
 
 ![Lua](https://img.shields.io/badge/Lua-5.1-000B41?style=for-the-badge&logo=lua&logoColor=0088FF&labelColor=000B41)
 ![Roblox](https://img.shields.io/badge/Roblox-Executor-000B41?style=for-the-badge&logo=roblox&logoColor=0088FF&labelColor=000B41)
-![License](https://img.shields.io/badge/License-GPLv3.0-000B41?style=for-the-badge&labelColor=000B41&color=0088FF)
+![License](https://img.shields.io/badge/License-MIT-000B41?style=for-the-badge&labelColor=000B41&color=0088FF)
 ![Status](https://img.shields.io/badge/Status-Stable-000B41?style=for-the-badge&labelColor=000B41&color=0088FF)
 
 <br>
@@ -397,7 +397,7 @@ server-side and execution logic removed.
 ## License
 
 ```
-GPL v3.0 License — see LICENSE file for details.
+MIT License — see LICENSE file for details.
 ```
 
 <br>
